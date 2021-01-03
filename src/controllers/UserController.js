@@ -27,7 +27,6 @@ module.exports = {
       const user = await User.create({
         first_name,
         last_name,
-        email,
         birth_date_day,
         birth_date_month,
         birth_date_year,

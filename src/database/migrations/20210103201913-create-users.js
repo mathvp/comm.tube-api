@@ -9,15 +9,18 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
+      account_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'user_accounts', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       first_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       last_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      email: {
         type: Sequelize.STRING,
         allowNull: false,
       },

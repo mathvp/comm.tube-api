@@ -17,7 +17,6 @@ class User extends Model {
         }
       },
       last_name:        DataTypes.STRING,
-      email:            DataTypes.STRING,
       birth_date_day:   DataTypes.INTEGER,
       birth_date_month: DataTypes.INTEGER,
       birth_date_year:  DataTypes.INTEGER,
@@ -25,6 +24,10 @@ class User extends Model {
     }, {
       sequelize
     });
+  }
+
+  static associate(models) {
+    this.belongsTo(models.UserAccount, { foreignKey: 'account_id', as: 'user_account' });
   }
 }
 
