@@ -9,5 +9,6 @@ routes.post('/users', UserController.store);
 
 routes.post('/register', UserAccountController.store);
 routes.post('/login', UserAccountController.login);
+routes.post('/logout', UserAccountController.logout);
 
 module.exports = routes;

@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
 const UserAccount = require('../models/UserAccount');
 const sequelize = require('../database');
-const bcrypt = require('bcryptjs');
+const config = require('../config/auth.config');
 
 module.exports = {
   async store(req, res) {
@@ -76,7 +79,15 @@ module.exports = {
           });
         }
 
-        return res.status(200).json(account);
+        const token = jwt.sign({ id: account.id }, `${config.secret}`, {
+          expiresIn: 86400 // 24 hours
+        });
+
+        return res.status(200).json({
+          id: account.id,
+          email: account.email,
+          accessToken: token
+        });
 
       }).catch(error => {
         console.log(error);
@@ -87,5 +98,11 @@ module.exports = {
     } catch(error) {
       console.log(error);
     }
+  },
+
+  async logout(req, res) {
+    return res.status(200).json({
+      accessToken: null
+    });
   }
 };
