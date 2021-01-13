@@ -28,6 +28,7 @@ class User extends Model {
 
   static associate(models) {
     this.belongsTo(models.UserAccount, { foreignKey: 'account_id', as: 'user_account' });
+    this.belongsToMany(models.Channel, { foreignKey: 'user_id', through: 'user_channels', as: 'channels' });
   }
 }
 
