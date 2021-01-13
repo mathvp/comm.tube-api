@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const UserAccount = require('../models/UserAccount');
 const sequelize = require('../database');
 const config = require('../config/auth.config');
+const User = require('../models/User');
 
 module.exports = {
   async store(req, res) {
@@ -60,7 +61,8 @@ module.exports = {
       const account = await UserAccount.findOne({
         where: {
           email
-        }
+        },
+        include: ['user']
       }).then(account => {
 
         if (!account) {
@@ -79,7 +81,7 @@ module.exports = {
           });
         }
 
-        const token = jwt.sign({ id: account.id }, `${config.secret}`, {
+        const token = jwt.sign({ id: account.user.id }, `${config.secret}`, {
           expiresIn: 86400 // 24 hours
         });
 
