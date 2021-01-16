@@ -17,8 +17,22 @@ module.exports = function(app) {
     UserController.index
   );
 
-  app.get('/users/:user_id/channels', ChannelController.index);
-  app.post('/users/:user_id/channels', ChannelController.store);
-  app.delete('/users/:user_id/channels', ChannelController.delete);
+  app.get(
+    '/users/:user_id/channels',
+    [authJwt.verifyToken],
+    ChannelController.index
+  );
+
+  app.post(
+    '/users/:user_id/channels',
+    [authJwt.verifyToken],
+    ChannelController.store
+  );
+
+  app.delete(
+    '/users/:user_id/channels',
+    [authJwt.verifyToken],
+    ChannelController.delete
+  );
 };
 
