@@ -1,6 +1,7 @@
 const { authJwt } = require('../middlewares');
 const UserController = require('../controllers/UserController');
 const ChannelController = require('../controllers/ChannelController');
+const YoutubeScrappingController = require('../controllers/YoutubeScrappingController');
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -33,6 +34,12 @@ module.exports = function(app) {
     '/users/:user_id/channels',
     [authJwt.verifyToken],
     ChannelController.delete
+  );
+
+  app.get(
+    '/channels-search',
+    [authJwt.verifyToken],
+    YoutubeScrappingController.searchChannels
   );
 };
 
