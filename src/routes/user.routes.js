@@ -13,7 +13,7 @@ module.exports = function(app) {
   });
 
   app.get(
-    "/users",
+    "/user",
     [authJwt.verifyToken],
     UserController.index
   );
@@ -40,6 +40,11 @@ module.exports = function(app) {
     '/channels-search',
     [authJwt.verifyToken],
     YoutubeScrappingController.searchChannels
+  );
+
+  app.post(
+    '/upload-profile-picture',
+    UserController.addProfilePicture
   );
 };
 
