@@ -5,6 +5,7 @@ const UserAccount = require('../models/UserAccount');
 const sequelize = require('../database');
 const config = require('../config/auth.config');
 const User = require('../models/User');
+const { errors } = require('puppeteer');
 
 module.exports = {
   async store(req, res) {
@@ -40,12 +41,18 @@ module.exports = {
 
       await t.commit();
 
-      return res.status(200).json({ account: userAccount, 'user_data': user });
+      return res.status(200).json({ account: userAccount.email, 'user_data': user });
 
     } catch (error) {
       await t.rollback();
 
-      return res.status(400).json({ error: error.message || error });
+      if (error.errors.length) {
+        if (error.errors[0].type === 'notNull Violation') {
+          return res.status(400).json({ message: 'Há um campo em branco...' })
+        }
+      }
+
+      return res.status(400).json({ error });
     }
   },
 
@@ -55,7 +62,7 @@ module.exports = {
       const { email, password } = req.body;
 
       if (email == undefined || email == null || password == undefined || password == null) {
-        return res.status(400).json({ error: "Usuário ou senha incorretos" });
+        return res.status(401).json({ error: "Usuário ou senha incorretos" });
       }
 
       const account = await UserAccount.findOne({
@@ -66,7 +73,7 @@ module.exports = {
       }).then(account => {
 
         if (!account) {
-          return res.status(400).json({ error: "Usuário ou senha incorretos" });
+          return res.status(401).json({ error: "Usuário ou senha incorretos" });
         }
 
         const isPasswordValid = bcrypt.compareSync(

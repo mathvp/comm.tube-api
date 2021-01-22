@@ -16,7 +16,10 @@ class UserAccount extends Model {
           }
         }
       },
-      password: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      }
     }, {
       sequelize
     });
