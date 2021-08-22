@@ -11,4 +11,9 @@ app.use(express.json());
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 
-app.listen(8080);
+const hostname = '127.0.0.1';
+const port = 8080;
+
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
